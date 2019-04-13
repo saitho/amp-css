@@ -59,7 +59,7 @@ function compileSassToCss(options) {
 function assignCss(html, css) {
     return html.replace(
         RegExp(
-            '/' + AMP_CUSTOM_CSS_OPENING.replace('/', '\/') + '[\s\S]*' + AMP_CUSTOM_CSS_CLOSING.replace('/', '\/') + '/'
+            AMP_CUSTOM_CSS_OPENING.replace('/', '\\/') + '[\s\S]*' + AMP_CUSTOM_CSS_CLOSING.replace('/', '\\/')
         ),
         AMP_CUSTOM_CSS_OPENING + css + AMP_CUSTOM_CSS_CLOSING
     );
@@ -100,8 +100,8 @@ module.exports = {
             throw Error('Missing option "htmlFile".');
         }
         var fs = require('fs');
-        var htmlContent = fs.readFileSync(options.htmlFile);
-        var cssContent = fs.readFileSync(options.cssFile);
+        var htmlContent = fs.readFileSync(options.htmlFile).toString();
+        var cssContent = fs.readFileSync(options.cssFile).toString();
         var updatedHtml = assignCss(htmlContent, cssContent);
         fs.writeFileSync(options.htmlFile, updatedHtml);
     }
