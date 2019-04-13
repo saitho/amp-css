@@ -19,6 +19,6 @@
     "amphtml-validator": "^1.0.23",
     "meow": "^5.0.0",
     "node-sass": "^4.11.0",
-    "node-sass-tilde-importer": "v2.0.0-alpha.1"
+    "node-sass-tilde-importer": "git+https://github.com/saitho/node-sass-tilde-importer.git"
   }
 }
