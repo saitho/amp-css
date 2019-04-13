@@ -48,6 +48,9 @@ function compileSassToCss(options) {
 
         var sass = require('node-sass');
         sass.render(sassOptions, function(err, result) {
+            if (err) {
+                throw err;
+            }
             resolve(result.css.toString());
         });
     });
