@@ -115,6 +115,7 @@ var cli = meow({
   boolean: [
     'quiet',
     'sanitize',
+    'minify'
   ],
   string: [
     'include-path',
@@ -124,11 +125,13 @@ var cli = meow({
     q: 'quiet',
     s: 'sanitize',
     o: 'output',
+    m: 'minify',
     v: 'version'
   },
   default: {
     'include-path': process.cwd(),
     sanitize: false,
+    minify: true,
     quiet: false
   }
 });
@@ -169,7 +172,8 @@ switch (options.action) {
       inputFile: options.src,
       outputFile: options.dest,
       includePaths: options.includePath,
-      sanitize: options.sanitize
+      sanitize: options.sanitize,
+      minify: options.minify
     });
     break;
   case 'assign':

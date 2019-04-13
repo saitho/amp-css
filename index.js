@@ -43,13 +43,15 @@ function compileSassToCss(options) {
         var sassOptions = {
             file: options['inputFile'],
             includePaths: options.hasOwnProperty('includePaths') ? options.includePaths : [],
-            importer: require('node-sass-tilde-importer')
+            importer: require('node-sass-tilde-importer'),
+            outputStyle: options.hasOwnProperty('minify') && options.minify ? 'compressed' : 'nested'
         };
 
         var sass = require('node-sass');
         sass.render(sassOptions, function(err, result) {
             if (err) {
-                throw err;
+                reject(err);
+                return;
             }
             resolve(result.css.toString());
         });
@@ -90,7 +92,7 @@ module.exports = {
                 console.log(css);
             })
             .catch(function(error) {
-                console.error(error);
+                throw error;
             });
     },
     assign: function(options) {
