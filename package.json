@@ -1,0 +1,20 @@
+{
+  "name": "amp-scss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.saitho.me:saitho/amp-scss.git"
+  },
+  "author": "Mario Lubenka",
+  "license": "MIT",
+  "dependencies": {
+    "amphtml-validator": "^1.0.23",
+    "node-sass": "^4.11.0",
+    "node-sass-tilde-importer": "^1.0.2"
+  }
+}
