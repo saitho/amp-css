@@ -1,5 +1,5 @@
 module.exports = {
-    process(options) {
+    process: function(options) {
         if (!options.hasOwnProperty('inputFile')) {
             throw Error('Missing option "inputFile".');
         }
