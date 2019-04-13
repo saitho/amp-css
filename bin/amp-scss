@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 var Emitter = require('events').EventEmitter,
-  meow = require('meow'),
-  util = require('util'),
-  path = require('path'),
-  ampScss = require('../index'),
-  stdout = require('stdout-stream'),
-  stdin = require('get-stdin'),
-  fs = require('fs');
+    meow = require('meow'),
+    util = require('util'),
+    path = require('path'),
+    ampScss = require('../index'),
+    stdout = require('stdout-stream'),
+    stdin = require('get-stdin'),
+    fs = require('fs');
 
 /**
  * Initialize CLI
@@ -33,6 +33,33 @@ var helpText = [
   '  --include-path             Path to look for imported files',
   '  --help                     Print usage info'
 ].join('\n');
+var cli = meow(helpText, {
+  flags: {
+    quiet: {
+      type: 'boolean',
+      alias: 'q',
+      default: false
+    },
+    sanitize: {
+      type: 'boolean',
+      alias: 's',
+      default: false
+    },
+    minify: {
+      type: 'boolean',
+      alias: 'm',
+      default: true
+    },
+    output: {
+      type: 'string',
+      alias: 'o'
+    },
+    'include-path': {
+      type: 'string',
+      default: process.cwd()
+    },
+  }
+});
 
 /**
  * Is a Directory
@@ -100,41 +127,13 @@ function getOptions(args, options) {
     options.dest = path.resolve(args[2]);
   } else if (options.output) {
     options.dest = path.join(
-      path.resolve(options.output),
-      [path.basename(options.src, path.extname(options.src)), '.css'].join(''));  // replace ext.
+        path.resolve(options.output),
+        [path.basename(options.src, path.extname(options.src)), '.css'].join(''));  // replace ext.
   }
 
   return options;
 }
 
-var cli = meow({
-  pkg: '../package.json',
-  version: packageJson.version,
-  help: helpText
-}, {
-  boolean: [
-    'quiet',
-    'sanitize',
-    'minify'
-  ],
-  string: [
-    'include-path',
-    'output'
-  ],
-  alias: {
-    q: 'quiet',
-    s: 'sanitize',
-    o: 'output',
-    m: 'minify',
-    v: 'version'
-  },
-  default: {
-    'include-path': process.cwd(),
-    sanitize: false,
-    minify: true,
-    quiet: false
-  }
-});
 /**
  * Arguments and options
  */
@@ -200,6 +199,6 @@ switch (options.action) {
     break;
   default:
     // Help
-      console.info(helpText);
+    console.info(helpText);
     break;
 }
