@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var Emitter = require('events').EventEmitter,
-  meow = require('n'),
+  meow = require('meow'),
   util = require('util'),
   path = require('path'),
   ampScss = require('../index'),
@@ -12,11 +12,11 @@ var Emitter = require('events').EventEmitter,
 /**
  * Initialize CLI
  */
-var packageJsonFile = '../package.json';
+var packageJsonFile = path.join(__dirname, '..', 'package.json');
 var packageJson = JSON.parse(fs.readFileSync(packageJsonFile));
 
 var cli = meow({
-  pkg: packageJsonFile,
+  pkg: '../package.json',
   version: packageJson.version,
   help: [
     'Usage:',
@@ -27,6 +27,7 @@ var cli = meow({
     '',
     'Options',
     '  -o, --output               Output directory',
+    '  -s, --sanitize             Remove !important',
     '  -q, --quiet                Suppress log output except on error',
     '  -v, --version              Prints version info',
     '  --include-path             Path to look for imported files',
@@ -34,7 +35,8 @@ var cli = meow({
   ].join('\n')
 }, {
   boolean: [
-    'quiet'
+    'quiet',
+    'sanitize',
   ],
   string: [
     'include-path',
@@ -42,11 +44,13 @@ var cli = meow({
   ],
   alias: {
     q: 'quiet',
+    s: 'sanitize',
     o: 'output',
     v: 'version'
   },
   default: {
     'include-path': process.cwd(),
+    sanitize: false,
     quiet: false
   }
 });
@@ -124,46 +128,13 @@ function getOptions(args, options) {
 }
 
 /**
- * Run
- *
- * @param {Object} options
- * @param {Object} emitter
- * @api private
- */
-
-function run(options, emitter) {
-  if (!Array.isArray(options.includePath)) {
-    options.includePath = [options.includePath];
-  }
-
-  if (options.directory) {
-    if (!options.output) {
-      emitter.emit('error', 'An output directory must be specified when compiling a directory');
-    }
-    if (!isDirectory(options.output)) {
-      emitter.emit('error', 'An output directory must be specified when compiling a directory');
-    }
-  }
-
-  ampScss.process({
-    inputFile: options.src,
-    outputFile: options.dest,
-    includePaths: options.includePath
-  });
-}
-
-/**
  * Arguments and options
  */
 
 var options = getOptions(cli.input, cli.flags);
 var emitter = getEmitter();
 
-/**
- * Show usage if no arguments are supplied
- */
-
-if (!options.src && process.stdin.isTTY) {
+if (!options.src) {
   emitter.emit('error', [
     'Provide a Sass file to render',
     '',
@@ -172,20 +143,26 @@ if (!options.src && process.stdin.isTTY) {
   ].join('\n'));
 }
 
-/**
- * Apply arguments
- */
-
-if (options.src) {
-  if (isDirectory(options.src)) {
-    emitter.emit('error', 'Input must not be a directory.');
-    return;
-  }
-  run(options, emitter);
-} else if (!process.stdin.isTTY) {
-  stdin(function(data) {
-    options.data = data;
-    options.stdin = true;
-    run(options, emitter);
-  });
+if (isDirectory(options.src)) {
+  emitter.emit('error', 'Input must not be a directory.');
+  return;
 }
+if (!Array.isArray(options.includePath)) {
+  options.includePath = [options.includePath];
+}
+
+if (options.directory) {
+  if (!options.output) {
+    emitter.emit('error', 'An output directory must be specified when compiling a directory');
+  }
+  if (!isDirectory(options.output)) {
+    emitter.emit('error', 'An output directory must be specified when compiling a directory');
+  }
+}
+
+ampScss.process({
+  inputFile: options.src,
+  outputFile: options.dest,
+  includePaths: options.includePath,
+  sanitize: options.sanitize
+});
