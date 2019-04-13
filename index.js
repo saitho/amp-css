@@ -1,3 +1,6 @@
+var AMP_CUSTOM_CSS_OPENING = '<style amp-custom type="text/css">';
+var AMP_CUSTOM_CSS_CLOSING = '</style>';
+
 function validateAmp(source) {
     var ampBoilerplate = '<!DOCTYPE html>' +
         '<html amp>' +
@@ -7,13 +10,13 @@ function validateAmp(source) {
         '<link rel="canonical" href="index.html">' +
         '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>' +
         '<script async src="https://cdn.ampproject.org/v0.js"></script>' +
-        '<style amp-custom type="text/css">#CUSTOM_CSS#</style>' +
+        AMP_CUSTOM_CSS_OPENING + AMP_CUSTOM_CSS_CLOSING +
         '</head>' +
         '<body></body>' +
         '</html>';
     var amphtmlValidator = require('amphtml-validator');
     amphtmlValidator.getInstance().then(function (validator) {
-        var result = validator.validateString(ampBoilerplate.replace('#CUSTOM_CSS#', source));
+        var result = validator.validateString(assignCss(ampBoilerplate, source));
 
         if (result.status !== 'PASS') {
             var msg = "";
@@ -36,7 +39,7 @@ function removeImportant(source) {
 }
 
 function compileSassToCss(options) {
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         var sassOptions = {
             file: options['inputFile'],
             includePaths: options.hasOwnProperty('includePaths') ? options.includePaths : [],
@@ -50,6 +53,15 @@ function compileSassToCss(options) {
     });
 }
 
+function assignCss(html, css) {
+    return html.replace(
+        RegExp(
+            '/' + AMP_CUSTOM_CSS_OPENING.replace('/', '\/') + '[\s\S]*' + AMP_CUSTOM_CSS_CLOSING.replace('/', '\/') + '/'
+        ),
+        AMP_CUSTOM_CSS_OPENING + css + AMP_CUSTOM_CSS_CLOSING
+    );
+}
+
 module.exports = {
     process: function(options) {
         if (!options.hasOwnProperty('inputFile')) {
@@ -61,8 +73,8 @@ module.exports = {
         options.sanitize = options.hasOwnProperty('sanitize') ? options.sanitize : false;
 
         compileSassToCss(options)
-            .then((css) => {
-                const byteSize = Buffer.from(css).byteLength;
+            .then(function(css) {
+                var byteSize = Buffer.from(css).byteLength;
                 if (byteSize > 50000) {
                     throw Error('[AMP] CSS file size extends 50kb!');
                 }
@@ -73,6 +85,21 @@ module.exports = {
 
                 validateAmp(css);
                 console.log(css);
-            }).catch((error) => console.error(error));
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    },
+    assign: function(options) {
+        if (!options.hasOwnProperty('cssFile')) {
+            throw Error('Missing option "cssFile".');
+        } else if (!options.hasOwnProperty('htmlFile')) {
+            throw Error('Missing option "htmlFile".');
+        }
+        var fs = require('fs');
+        var htmlContent = fs.readFileSync(options.htmlFile);
+        var cssContent = fs.readFileSync(options.cssFile);
+        var updatedHtml = assignCss(htmlContent, cssContent);
+        fs.writeFileSync(options.htmlFile, updatedHtml);
     }
 };
