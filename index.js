@@ -1,6 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var AMP_CUSTOM_CSS_OPENING = '<style amp-custom type="text/css">';
+var AMP_CUSTOM_CSS_OPENING = '<style amp-custom>';
 var AMP_CUSTOM_CSS_CLOSING = '</style>';
 
 function validateAmp(source) {
