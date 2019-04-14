@@ -168,11 +168,15 @@ switch (options.action) {
       }
     }
     ampScss.process({
-      inputFile: options.src,
-      outputFile: options.dest,
+      file: options.src,
       includePaths: options.includePath,
       sanitize: options.sanitize,
       minify: options.minify
+    }).then(function(css) {
+      console.log(css);
+    }).catch(function(error) {
+      console.error('AMP validation failed:');
+      console.error(error);
     });
     break;
   case 'assign':

@@ -1,3 +1,5 @@
+var fs = require('fs');
+var path = require('path');
 var AMP_CUSTOM_CSS_OPENING = '<style amp-custom type="text/css">';
 var AMP_CUSTOM_CSS_CLOSING = '</style>';
 
@@ -27,8 +29,6 @@ function validateAmp(source) {
                     msg += ' (see ' + error.specUrl + ')\n';
                 }
             }
-            console.error('[AMP] AMP validation failed!');
-            console.error(msg);
             throw Error(msg);
         }
     });
@@ -41,11 +41,18 @@ function removeImportant(source) {
 function compileSassToCss(options) {
     return new Promise(function(resolve, reject) {
         var sassOptions = {
-            file: options['inputFile'],
             includePaths: options.hasOwnProperty('includePaths') ? options.includePaths : [],
             importer: require('node-sass-tilde-importer'),
             outputStyle: options.hasOwnProperty('minify') && options.minify ? 'compressed' : 'nested'
         };
+
+        if (options.hasOwnProperty('file')) {
+            sassOptions.file = options.file;
+        }
+        if (options.hasOwnProperty('data')) {
+            sassOptions.data = options.data;
+        }
+
 
         var sass = require('node-sass');
         sass.render(sassOptions, function(err, result) {
@@ -67,33 +74,60 @@ function assignCss(html, css) {
     );
 }
 
+function processFile(options) {
+    return new Promise(function (resolve, reject) {
+        switch (options.fileType) {
+            case 'scss':
+                compileSassToCss(options)
+                    .then(resolve)
+                    .catch(reject);
+                break;
+            case 'css':
+                if (options.hasOwnProperty('data')) {
+                    resolve(options.data);
+                } else {
+                    resolve(fs.readFileSync(options.file).toString());
+                }
+                break;
+            default:
+                reject('Unsupported file type ' + options.fileType);
+        }
+    });
+}
+
 module.exports = {
     process: function(options) {
-        if (!options.hasOwnProperty('inputFile')) {
-            throw Error('Missing option "inputFile".');
-        }
-        if (!options.hasOwnProperty('outputFile')) {
-            throw Error('Missing option "outputFile".');
-        }
-        options.sanitize = options.hasOwnProperty('sanitize') ? options.sanitize : false;
+        return new Promise(function(resolve, reject) {
+            if (!options.hasOwnProperty('file') && !options.hasOwnProperty('data')) {
+                throw Error('Missing option "file" or "data".');
+            }
+            options.sanitize = options.hasOwnProperty('sanitize') ? options.sanitize : false;
 
-        compileSassToCss(options)
-            .then(function(css) {
-                var byteSize = Buffer.from(css).byteLength;
-                if (byteSize > 50000) {
-                    throw Error('[AMP] CSS file size extends 50kb!');
-                }
+            if (!options.hasOwnProperty('fileType') && options.hasOwnProperty('file')) {
+                options.fileType = path.extname(options.file).replace('.', '');
+            }
 
-                if (options.sanitize) {
-                    css = removeImportant(css);
-                }
+            processFile(options)
+                .then(function(css) {
+                    var byteSize = Buffer.from(css).byteLength;
+                    if (byteSize > 50000) {
+                        reject('[AMP] CSS file size extends 50kb!');
+                        return;
+                    }
 
-                validateAmp(css);
-                console.log(css);
-            })
-            .catch(function(error) {
-                throw error;
-            });
+                    if (options.sanitize) {
+                        css = removeImportant(css);
+                    }
+
+                    try {
+                        validateAmp(css);
+                        resolve(css);
+                    } catch (e) {
+                        reject(e);
+                    }
+                })
+                .catch(reject);
+        });
     },
     assign: function(options) {
         if (!options.hasOwnProperty('cssFile')) {
@@ -101,7 +135,6 @@ module.exports = {
         } else if (!options.hasOwnProperty('htmlFile')) {
             throw Error('Missing option "htmlFile".');
         }
-        var fs = require('fs');
         var htmlContent = fs.readFileSync(options.htmlFile).toString();
         var cssContent = fs.readFileSync(options.cssFile).toString();
         var updatedHtml = assignCss(htmlContent, cssContent);
