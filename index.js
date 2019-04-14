@@ -3,7 +3,7 @@ var path = require('path');
 var AMP_CUSTOM_CSS_OPENING = '<style amp-custom>';
 var AMP_CUSTOM_CSS_CLOSING = '</style>';
 
-function validateAmp(source) {
+async function validateAmp(source) {
     var ampBoilerplate = '<!DOCTYPE html>' +
         '<html amp>' +
         '<head>' +
@@ -17,21 +17,21 @@ function validateAmp(source) {
         '<body></body>' +
         '</html>';
     var amphtmlValidator = require('amphtml-validator');
-    amphtmlValidator.getInstance().then(function (validator) {
-        var result = validator.validateString(assignCss(ampBoilerplate, source));
+    var validator = await amphtmlValidator.getInstance();
+    var result = validator.validateString(assignCss(ampBoilerplate, source));
 
-        if (result.status !== 'PASS') {
-            var msg = "";
-            for (var ii = 0; ii < result.errors.length; ii++) {
-                var error = result.errors[ii];
-                msg += 'line ' + error.line + ', col ' + error.col + ': ' + error.message;
-                if (error.specUrl !== null) {
-                    msg += ' (see ' + error.specUrl + ')\n';
-                }
+    console.debug('AMP CSS validation status: ' + result.status);
+    if (result.status !== 'PASS') {
+        var msg = "";
+        for (var ii = 0; ii < result.errors.length; ii++) {
+            var error = result.errors[ii];
+            msg += 'line ' + error.line + ', col ' + error.col + ': ' + error.message;
+            if (error.specUrl !== null) {
+                msg += ' (see ' + error.specUrl + ')\n';
             }
-            throw Error(msg);
         }
-    });
+        throw Error(msg);
+    }
 }
 
 function removeImportant(source) {
@@ -108,41 +108,36 @@ module.exports = {
             }
 
             processFile(options)
-                .then(function(css) {
-                    var byteSize = Buffer.from(css).byteLength;
-                    if (byteSize > 50000) {
-                        reject('[AMP] CSS file size extends 50kb!');
-                        return;
-                    }
+                .then(async function(css) {
+                if (options.sanitize) {
+                    css = removeImportant(css);
+                }
 
-                    if (options.sanitize) {
-                        css = removeImportant(css);
-                    }
+                var byteSize = Buffer.from(css).byteLength;
+                console.debug('CSS byte size is: ' + byteSize);
+                if (byteSize > 50000) {
+                    reject('[AMP] CSS file size extends 50kb!');
+                    return;
+                }
 
-                    try {
-                        validateAmp(css);
-                        resolve(css);
-                    } catch (e) {
-                        reject(e);
-                    }
-                })
-                .catch(reject);
+                try {
+                    await validateAmp(css);
+                    resolve(css);
+                } catch (e) {
+                    reject(e);
+                }
+            })
+        .catch(reject);
         });
     },
     assign: function(options) {
-        if (!options.hasOwnProperty('cssFile') && !options.hasOwnProperty('css')) {
-            throw Error('Missing option "css" or "cssFile".');
+        if (!options.hasOwnProperty('cssFile')) {
+            throw Error('Missing option "cssFile".');
         } else if (!options.hasOwnProperty('htmlFile')) {
             throw Error('Missing option "htmlFile".');
         }
         var htmlContent = fs.readFileSync(options.htmlFile).toString();
-
-        var cssContent = "";
-        if (options.hasOwnProperty('css')) {
-            cssContent = options.css;
-        } else {
-            cssContent = fs.readFileSync(options.cssFile).toString();
-        }
+        var cssContent = fs.readFileSync(options.cssFile).toString();
         var updatedHtml = assignCss(htmlContent, cssContent);
         fs.writeFileSync(options.htmlFile, updatedHtml);
     }
