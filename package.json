@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "amp-scss": "bin/amp-css"
+    "amp-css": "bin/amp-css"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
