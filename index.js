@@ -130,13 +130,19 @@ module.exports = {
         });
     },
     assign: function(options) {
-        if (!options.hasOwnProperty('cssFile')) {
-            throw Error('Missing option "cssFile".');
+        if (!options.hasOwnProperty('cssFile') && !options.hasOwnProperty('css')) {
+            throw Error('Missing option "css" or "cssFile".');
         } else if (!options.hasOwnProperty('htmlFile')) {
             throw Error('Missing option "htmlFile".');
         }
         var htmlContent = fs.readFileSync(options.htmlFile).toString();
-        var cssContent = fs.readFileSync(options.cssFile).toString();
+
+        var cssContent = "";
+        if (options.hasOwnProperty('css')) {
+            cssContent = options.css;
+        } else {
+            cssContent = fs.readFileSync(options.cssFile).toString();
+        }
         var updatedHtml = assignCss(htmlContent, cssContent);
         fs.writeFileSync(options.htmlFile, updatedHtml);
     }
