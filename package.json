@@ -1,17 +1,17 @@
 {
-  "name": "amp-scss",
+  "name": "amp-css",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "amp-scss": "bin/amp-scss"
+    "amp-scss": "bin/amp-css"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@git.saitho.me:saitho/amp-scss.git"
+    "url": "git@git.saitho.me:saitho/amp-css.git"
   },
   "author": "Mario Lubenka",
   "license": "MIT",
