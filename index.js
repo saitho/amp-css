@@ -39,9 +39,19 @@ function removeImportant(source) {
 }
 
 function compileSassToCss(options) {
+    var includePaths = [];
+    if (options.hasOwnProperty('includePaths')) {
+        includePaths = options.includePaths;
+    }
+    // Add folder of processed file to include paths
+    if (options.hasOwnProperty('file')) {
+        includePaths.push(path.dirname(options.file));
+    }
+
     return new Promise(function(resolve, reject) {
+
         var sassOptions = {
-            includePaths: options.hasOwnProperty('includePaths') ? options.includePaths : [],
+            includePaths: includePaths,
             importer: require('node-sass-tilde-importer'),
             outputStyle: options.hasOwnProperty('minify') && options.minify ? 'compressed' : 'nested'
         };

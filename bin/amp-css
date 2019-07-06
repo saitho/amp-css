@@ -28,6 +28,7 @@ var helpText = [
   'Options',
   '  -o, --output-dir               Output directory',
   '  -s, --sanitize             Remove !important',
+  '  -m, --minify             Minifies CSS',
   '  -q, --quiet                Suppress log output except on error',
   '  -v, --version              Prints version info',
   '  --include-path             Path to look for imported files',
