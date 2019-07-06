@@ -95,13 +95,25 @@ function processFile(options) {
     });
 }
 
+function enableQuietMode() {
+    console.log = function() {}
+    console.debug = function() {}
+}
+
 module.exports = {
     process: function(options) {
         return new Promise(function(resolve, reject) {
+
+            if (options.quiet) {
+                enableQuietMode();
+            }
+
             if (!options.hasOwnProperty('file') && !options.hasOwnProperty('data')) {
                 throw Error('Missing option "file" or "data".');
             }
-            options.sanitize = options.hasOwnProperty('sanitize') ? options.sanitize : false;
+            if (!options.hasOwnProperty('sanitize')) {
+                options.sanitize = false;
+            }
 
             if (!options.hasOwnProperty('fileType') && options.hasOwnProperty('file')) {
                 options.fileType = path.extname(options.file).replace('.', '');
@@ -122,6 +134,12 @@ module.exports = {
 
                 try {
                     await validateAmp(css);
+
+                    if (options.hasOwnProperty('outputDir')) {
+                        console.debug('Writing CSS to file ' + options.outputDir);
+                        fs.writeFileSync(options.outputDir, css);
+                    }
+
                     resolve(css);
                 } catch (e) {
                     reject(e);

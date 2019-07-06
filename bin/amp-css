@@ -26,7 +26,7 @@ var helpText = [
   'amp-scss assign foobar.css index.html',
   '',
   'Options',
-  '  -o, --output               Output directory',
+  '  -o, --output-dir               Output directory',
   '  -s, --sanitize             Remove !important',
   '  -q, --quiet                Suppress log output except on error',
   '  -v, --version              Prints version info',
@@ -50,7 +50,7 @@ var cli = meow(helpText, {
       alias: 'm',
       default: true
     },
-    output: {
+    'output-dir': {
       type: 'string',
       alias: 'o'
     },
@@ -125,13 +125,18 @@ function getOptions(args, options) {
 
   if (args[2]) {
     options.dest = path.resolve(args[2]);
-  } else if (options.output) {
+  } else if (options.outputDir) {
     options.dest = path.join(
-        path.resolve(options.output),
+        path.resolve(options.outputDir),
         [path.basename(options.src, path.extname(options.src)), '.css'].join(''));  // replace ext.
   }
 
   return options;
+}
+
+function enableQuietMode() {
+  console.log = function() {}
+  console.debug = function() {}
 }
 
 /**
@@ -142,6 +147,11 @@ var emitter = getEmitter();
 
 switch (options.action) {
   case 'process':
+    if (options.quiet) {
+      enableQuietMode();
+    }
+
+
     if (!options.src) {
       emitter.emit('error', [
         'Provide a Sass file to render',
@@ -160,10 +170,10 @@ switch (options.action) {
     }
 
     if (options.directory) {
-      if (!options.output) {
+      if (!options['output-dir']) {
         emitter.emit('error', 'An output directory must be specified when compiling a directory');
       }
-      if (!isDirectory(options.output)) {
+      if (!isDirectory(options['output-dir'])) {
         emitter.emit('error', 'An output directory must be specified when compiling a directory');
       }
     }
@@ -171,7 +181,9 @@ switch (options.action) {
       file: options.src,
       includePaths: options.includePath,
       sanitize: options.sanitize,
-      minify: options.minify
+      minify: options.minify,
+      outputDir: options.dest,
+      quiet: options.quiet
     }).then(function(css) {
       console.log(css);
     }).catch(function(error) {
