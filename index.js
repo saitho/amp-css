@@ -148,9 +148,10 @@ module.exports = {
                     if (options.hasOwnProperty('outputDir')) {
                         console.debug('Writing CSS to file ' + options.outputDir);
                         fs.writeFileSync(options.outputDir, css);
+                        return;
+                    } else {
+                        resolve(css);
                     }
-
-                    resolve(css);
                 } catch (e) {
                     reject(e);
                 }
