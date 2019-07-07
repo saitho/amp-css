@@ -186,7 +186,9 @@ switch (options.action) {
       outputDir: options.dest,
       quiet: options.quiet
     }).then(function(css) {
-      console.log(css);
+      if (css) {
+        console.log(css);
+      }
     }).catch(function(error) {
       console.error('AMP validation failed:');
       console.error(error);
