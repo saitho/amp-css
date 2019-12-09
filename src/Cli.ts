@@ -31,7 +31,7 @@ export class Cli implements CliInterface {
             '  -v, --version              Prints version info',
             '  --include-path             Path to look for imported files',
             '  --help                     Print usage info'
-        ].join('\n');;
+        ].join('\n');
     }
 
     public init() {

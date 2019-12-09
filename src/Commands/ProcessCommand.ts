@@ -8,10 +8,8 @@ import * as path from "path";
 
 export class ProcessCommand extends AbstractCommand implements CommandInterface {
     public run(): Promise<void> {
-        var that = this;
         return new Promise<void>((resolve, reject) => {
-
-            var commandOptions = this.caller.getCommandOptions();
+            const commandOptions = this.caller.getCommandOptions();
             if (commandOptions.quiet) {
                 this.enableQuietMode();
             }
@@ -36,13 +34,6 @@ export class ProcessCommand extends AbstractCommand implements CommandInterface 
                 commandOptions.includePath = [commandOptions.includePath];
             }
 
-            if (commandOptions.directory) {
-                if (!commandOptions.outputDir || !this.isDirectory(commandOptions.outputDir)) {
-                    this.caller.getEmitter().emit('error', 'An output directory must be specified when compiling a directory');
-                }
-            }
-            console.log(commandOptions);
-
             // Compile file
             const compileWorker = new CompileCssWorker();
             compileWorker.setOptions(commandOptions);
@@ -65,7 +56,6 @@ export class ProcessCommand extends AbstractCommand implements CommandInterface 
                             fs.writeFileSync(commandOptions.dest, css);
                             return;
                         } else {
-                            that.result = css;
                             resolve();
                         }
                     })

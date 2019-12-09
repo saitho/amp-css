@@ -4,7 +4,7 @@ import * as fs from "fs";
 
 export class AssignCommand extends AbstractCommand {
     public run() {
-        var commandOptions = this.caller.getCommandOptions();
+        const commandOptions = this.caller.getCommandOptions();
         if (commandOptions.quiet) {
             this.enableQuietMode();
         }
@@ -31,10 +31,10 @@ export class AssignCommand extends AbstractCommand {
         } else if (!commandOptions.hasOwnProperty('dest')) {
             throw Error('Missing option "dest".');
         }
-        var cssContent = fs.readFileSync(commandOptions.src).toString();
-        var htmlContent = fs.readFileSync(commandOptions.dest).toString();
+        const cssContent = fs.readFileSync(commandOptions.src).toString();
+        const htmlContent = fs.readFileSync(commandOptions.dest).toString();
 
-        var assignCssWorker = new AssignCssWorker();
+        const assignCssWorker = new AssignCssWorker();
         assignCssWorker.setCss(cssContent);
         assignCssWorker.setHtml(htmlContent);
         assignCssWorker.work().then((result) => {

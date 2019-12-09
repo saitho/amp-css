@@ -26,11 +26,7 @@ export class CompileCssWorker extends AbstractCssWorker implements WorkerInterfa
                         .catch(reject);
                     break;
                 case 'css':
-                    if (that.options.hasOwnProperty('data')) {
-                        resolve(that.options.data);
-                    } else {
-                        resolve(fs.readFileSync(that.options.src).toString());
-                    }
+                    resolve(fs.readFileSync(that.options.src).toString());
                     break;
                 default:
                     reject('Unsupported file type ' + fileType);
@@ -39,9 +35,9 @@ export class CompileCssWorker extends AbstractCssWorker implements WorkerInterfa
     }
 
     protected compileSassToCss(options: CommandOptions): Promise<string> {
-        var includePaths: string[] = [];
+        const includePaths: string[] = [];
         if (options.hasOwnProperty('includePath')) {
-            includePaths = options.includePath;
+            includePaths.push(...options.includePath);
         }
         // Add folder of processed file to include paths
         if (options.hasOwnProperty('src')) {
@@ -49,7 +45,7 @@ export class CompileCssWorker extends AbstractCssWorker implements WorkerInterfa
         }
 
         return new Promise<string>(function(resolve, reject) {
-            var sassOptions: nodeSass.Options = {
+            const sassOptions: nodeSass.Options = {
                 includePaths: includePaths,
                 importer: require('node-sass-tilde-importer'),
                 outputStyle: options.hasOwnProperty('minify') && options.minify ? 'compressed' : 'nested'
@@ -57,9 +53,6 @@ export class CompileCssWorker extends AbstractCssWorker implements WorkerInterfa
 
             if (options.hasOwnProperty('src')) {
                 sassOptions.file = options.src;
-            }
-            if (options.hasOwnProperty('data')) {
-                sassOptions.data = options.data;
             }
 
             nodeSass.render(sassOptions, function(err: SassError, result: Result) {

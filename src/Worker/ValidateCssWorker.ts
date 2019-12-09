@@ -29,9 +29,9 @@ export class ValidateCssWorker extends AbstractCssWorker implements WorkerInterf
                     resolve();
                 })
                 .catch((validatorResult) => {
-                    var msg = '';
-                    for (var i = 0; i < validatorResult.errors.length; i++) {
-                        var error = validatorResult.errors[i];
+                    let msg = '';
+                    for (let i = 0; i < validatorResult.errors.length; i++) {
+                        const error = validatorResult.errors[i];
                         msg += 'line ' + error.line + ', col ' + error.col + ': ' + error.message;
                         if (error.specUrl !== null) {
                             msg += ' (see ' + error.specUrl + ')\n';
@@ -45,13 +45,13 @@ export class ValidateCssWorker extends AbstractCssWorker implements WorkerInterf
     protected async validateHTML(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             // Assign CSS to HTML boiler plate
-            var assignCssWorker = new AssignCssWorker();
+            const assignCssWorker = new AssignCssWorker();
             assignCssWorker.setHtml(this.ampBoilerplate);
             assignCssWorker.setCss(this.css);
             const result = await assignCssWorker.work();
 
             // Validate result
-            var validator = await ampHtmlValidator.getInstance();
+            const validator = await ampHtmlValidator.getInstance();
             const validatorResult = validator.validateString(result);
             console.debug('AMP CSS validation status: ' + validatorResult.status);
             if (validatorResult.status === 'PASS') {
@@ -63,11 +63,8 @@ export class ValidateCssWorker extends AbstractCssWorker implements WorkerInterf
     }
 
     protected checkFileSize(): boolean {
-        var byteSize = Buffer.from(this.css).byteLength;
+        const byteSize = Buffer.from(this.css).byteLength;
         console.debug('CSS byte size is: ' + byteSize);
-        if (byteSize > 50000) {
-            return false;
-        }
-        return true;
+        return byteSize <= 50000;
     }
 }

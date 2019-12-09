@@ -4,14 +4,9 @@ import * as fs from "fs";
 
 export abstract class AbstractCommand {
     protected caller: CliInterface;
-    protected result: any;
 
     constructor(caller: CliInterface) {
         this.caller = caller;
-    }
-
-    getResult(): any {
-        return this.result;
     }
 
     protected enableQuietMode() {
@@ -24,16 +19,13 @@ export abstract class AbstractCommand {
      *
      * @param {String} filePath
      * @returns {Boolean}
-     * @api private
      */
     protected isDirectory(filePath: string): boolean {
-        var isDir;
         try {
-            var absolutePath = path.resolve(filePath);
-            isDir = fs.statSync(absolutePath).isDirectory();
+            const absolutePath = path.resolve(filePath);
+            return fs.statSync(absolutePath).isDirectory();
         } catch (e) {
-            isDir = e.code === 'ENOENT';
+            return e.code === 'ENOENT';
         }
-        return isDir;
     }
 }
