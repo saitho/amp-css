@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Provides a binary to compile SCSS files and validate them for AMP.",
   "bin": {
-    "amp-css": "bin/amp-css"
+    "amp-css": "dist/bin/amp-css"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "tsc && cp ./dist/amp-css.js ./bin/amp-css"
+    "prepublish": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css"
   },
   "dependencies": {
     "amphtml-validator": "^1.0.23",
