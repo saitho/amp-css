@@ -3,4 +3,6 @@
 node_modules
 dist
 *.js
+!jest.config.js
 bin/amp-css
+coverage

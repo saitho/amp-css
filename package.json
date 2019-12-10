@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css"
+    "prepublish": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
+    "test": "jest --forceExit --coverage --verbose"
   },
   "dependencies": {
     "amphtml-validator": "^1.0.29",
@@ -24,8 +25,11 @@
   },
   "devDependencies": {
     "@types/amphtml-validator": "^1.0.1",
+    "@types/jest": "^24.0.23",
     "@types/meow": "^5.0.0",
     "@types/node-sass": "^4.11.0",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
     "typescript": "^3.7.3"
   }
 }

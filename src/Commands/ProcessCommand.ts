@@ -36,7 +36,9 @@ export class ProcessCommand extends AbstractCommand implements CommandInterface 
 
             // Compile file
             const compileWorker = new CompileCssWorker();
-            compileWorker.setOptions(commandOptions);
+            compileWorker.setFile(commandOptions.src);
+            compileWorker.setMinify(commandOptions.minify);
+            compileWorker.setIncludePaths(commandOptions.includePath);
             compileWorker.work().then(async function(css: string) {
                 if (commandOptions.sanitize) {
                     const sanitizeWorker = new SanitizeCssWorker();
