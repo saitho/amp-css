@@ -1,6 +1,4 @@
 language: nodejs
-node_js:
-  - "node"
 
 addons:
   sonarcloud:
