@@ -80,21 +80,9 @@ export class Cli implements CliInterface {
     }
 
     public initEmitter(emitter: EventEmitter) {
-        emitter.on('warn', (data: any) => {
-            if (!this.getOptions().quiet) {
-                console.warn(data);
-            }
-        });
-        emitter.on('help', (data: any) => {
-            console.info(data);
-        });
-        emitter.on('info', (data: any) => {
-            if (!this.getOptions().quiet) {
-                console.info(data);
-            }
-        });
         emitter.on('log', process.stdout.write.bind(process.stdout));
         emitter.on('error', process.stderr.write.bind(process.stderr));
+        emitter.on('help', (data: any) => emitter.emit('log', data));
     }
 
     protected assignCommandOptions() {
