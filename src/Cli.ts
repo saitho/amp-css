@@ -7,7 +7,7 @@ import {CommandOptions} from "./CommandOptions";
 import meow = require("meow");
 
 export class Cli implements CliInterface {
-    protected cli: meow.Result;
+    protected cli: meow.Result<any>;
     protected emitter: EventEmitter;
     protected options: CommandOptions;
     protected helpText: string;
@@ -98,9 +98,10 @@ export class Cli implements CliInterface {
         if (args[2]) {
             options.dest = path.resolve(args[2]);
         } else if (options.outputDir) {
+            const src = options.src as string;
             options.dest = path.join(
-                path.resolve(options.outputDir),
-                [path.basename(options.src, path.extname(options.src)), '.css'].join(''));  // replace ext.
+                path.resolve(options.outputDir as string),
+                [path.basename(src, path.extname(src)), '.css'].join(''));  // replace ext.
         }
         this.options = options as CommandOptions;
     }
