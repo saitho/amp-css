@@ -16,15 +16,18 @@ after_success:
 
 deploy:
   - provider: pages
+    skip_cleanup: true
     local_dir: docs/
     token: $GITHUB_TOKEN
   - provider: releases
     token: $GITHUB_TOKEN
     file_glob: true
     file: "amp-css-*.tgz"
+    skip_cleanup: true
     on:
       tags: true
   - provider: npm
+    skip_cleanup: true
     email: $NPM_MAIL
     api_key: $NPM_TOKEN
     on:
