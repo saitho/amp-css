@@ -5,11 +5,12 @@ import {ValidateCssWorker} from "../Worker/ValidateCssWorker";
 import {SanitizeCssWorker} from "../Worker/SanitizeCssWorker";
 import {CommandInterface} from "./CommandInterface";
 import * as path from "path";
+import {CommandOptions} from "../CommandOptions";
 
 export class ProcessCommand extends AbstractCommand implements CommandInterface {
     public run(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const commandOptions = this.caller.getCommandOptions();
+            const commandOptions = this.caller.getOptions();
             if (commandOptions.quiet) {
                 this.enableQuietMode();
             }
@@ -27,42 +28,61 @@ export class ProcessCommand extends AbstractCommand implements CommandInterface 
             }
 
             if (this.isDirectory(commandOptions.src)) {
-                this.caller.getEmitter().emit('error', 'Input must not be a directory.');
+                reject('Input must not be a directory.');
                 return;
-            }
-            if (!Array.isArray(commandOptions.includePath)) {
-                commandOptions.includePath = [commandOptions.includePath];
             }
 
             // Compile file
-            const compileWorker = new CompileCssWorker();
-            compileWorker.setFile(commandOptions.src);
-            compileWorker.setMinify(commandOptions.minify);
-            compileWorker.setIncludePaths(commandOptions.includePath);
-            compileWorker.work().then(async function(css: string) {
-                if (commandOptions.sanitize) {
-                    const sanitizeWorker = new SanitizeCssWorker();
-                    css = await sanitizeWorker.work();
-                }
+            const that = this;
+            this.doCompileWork(commandOptions)
+                .then(async function(css: string) {
+                    if (commandOptions.sanitize) {
+                        css = await that.doSanitizeWork(css);
+                    }
 
-                const validateWorker = new ValidateCssWorker();
-                validateWorker.setCss(css);
-                validateWorker.work()
-                    .then(() => {
-                        if (commandOptions.dest.length > 0) {
-                            console.debug('Writing CSS to file ' + commandOptions.dest);
-                            const dirname = path.dirname(commandOptions.dest);
-                            if (!fs.existsSync(dirname)) {
-                                fs.mkdirSync(dirname);
+                    that.doValidateWork(css)
+                        .then(() => {
+                            if (commandOptions.hasOwnProperty('dest') && commandOptions.dest.length > 0) {
+                                that.caller.getEmitter().emit('log', 'Writing CSS to file ' + commandOptions.dest);
+                                const dirname = path.dirname(commandOptions.dest);
+                                if (!fs.existsSync(dirname)) {
+                                    fs.mkdirSync(dirname);
+                                }
+                                fs.writeFileSync(commandOptions.dest, css);
                             }
-                            fs.writeFileSync(commandOptions.dest, css);
-                            return;
-                        } else {
                             resolve();
-                        }
-                    })
-                    .catch(reject);
-            }).catch(reject);
+                        })
+                        .catch(reject);
+                }).catch(reject);
         });
+    }
+
+    /**
+     * @internal public only for unit tests
+     */
+    public doCompileWork(commandOptions: CommandOptions) {
+        const compileWorker = new CompileCssWorker();
+        compileWorker.setFile(commandOptions.src);
+        compileWorker.setMinify(commandOptions.minify);
+        compileWorker.setIncludePaths(commandOptions.includePath);
+        return compileWorker.work()
+    }
+
+    /**
+     * @internal public only for unit tests
+     */
+    public doSanitizeWork(css: string) {
+        const sanitizeWorker = new SanitizeCssWorker();
+        sanitizeWorker.setCss(css);
+        return sanitizeWorker.work();
+    }
+
+    /**
+     * @internal public only for unit tests
+     */
+    public doValidateWork(css: string) {
+        const validateWorker = new ValidateCssWorker();
+        validateWorker.setCss(css);
+        return validateWorker.work();
     }
 }

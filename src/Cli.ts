@@ -5,6 +5,7 @@ import {ProcessCommand} from "./Commands/ProcessCommand";
 import {AssignCommand} from "./Commands/AssignCommand";
 import {CommandOptions} from "./CommandOptions";
 import meow = require("meow");
+import {CommandListType} from "./Commands/CommandListType";
 
 export class Cli implements CliInterface {
     protected cli: meow.Result<any>;
@@ -34,10 +35,18 @@ export class Cli implements CliInterface {
         ].join('\n');
     }
 
+    public getCommands(): CommandListType {
+        return {
+            process: new ProcessCommand(this),
+            assign: new AssignCommand(this),
+        };
+    }
+
     public init() {
         this.initMeow();
         this.assignCommandOptions();
-        this.initEmitter();
+        this.emitter = new EventEmitter();
+        this.initEmitter(this.emitter);
     }
 
     protected initMeow() {
@@ -70,23 +79,10 @@ export class Cli implements CliInterface {
         });
     }
 
-    protected initEmitter() {
-        this.emitter = new EventEmitter();
-        this.emitter.on('error', (err: any) => {
-            console.error(err);
-            process.exit(1);
-        });
-        this.emitter.on('warn', (data: any) => {
-            if (!this.getCommandOptions().quiet) {
-                console.warn(data);
-            }
-        });
-        this.emitter.on('info', (data: any) => {
-            if (!this.getCommandOptions().quiet) {
-                console.info(data);
-            }
-        });
-        this.emitter.on('log', process.stdout.write.bind(process.stdout));
+    public initEmitter(emitter: EventEmitter) {
+        emitter.on('log', process.stdout.write.bind(process.stdout));
+        emitter.on('error', process.stderr.write.bind(process.stderr));
+        emitter.on('help', (data: any) => emitter.emit('log', data));
     }
 
     protected assignCommandOptions() {
@@ -113,25 +109,18 @@ export class Cli implements CliInterface {
     /**
      * Construct options
      */
-    public getCommandOptions(): CommandOptions {
+    public getOptions(): CommandOptions {
         return this.options;
     }
 
     public async run() {
-        switch (this.getCommandOptions().action) {
-            case 'process':
-                const process = new ProcessCommand(this);
-                process.run()
-                    .catch((error) => this.emitter.emit('error', error));
-                break;
-            case 'assign':
-                const assign = new AssignCommand(this);
-                assign.run();
-                break;
-            default:
-                // Help
-                console.info(this.helpText);
-                break;
+        const requestedCommand = this.getOptions().action;
+        const commands = this.getCommands();
+        if (!commands.hasOwnProperty(requestedCommand)) {
+            this.emitter.emit('help', this.helpText);
+            return;
         }
+        commands[requestedCommand].run()
+            .catch((error) => this.emitter.emit('error', error));
     }
 }

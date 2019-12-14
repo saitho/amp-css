@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
-    "test": "jest --forceExit --coverage --verbose"
+    "test": "jest --detectOpenHandles --coverage --verbose"
   },
   "dependencies": {
     "amphtml-validator": "^1.0.29",
@@ -36,9 +36,12 @@
     "@types/amphtml-validator": "^1.0.1",
     "@types/jest": "^24.0.23",
     "@types/meow": "^5.0.0",
+    "@types/mock-fs": "^4.10.0",
     "@types/node-sass": "^4.11.0",
     "jest": "^24.9.0",
+    "mock-fs": "^4.10.4",
     "ts-jest": "^24.2.0",
+    "ts-mockito": "^2.5.0",
     "typedoc": "^0.15.4",
     "typescript": "^3.7.3"
   }
