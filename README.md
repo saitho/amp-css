@@ -1,7 +1,11 @@
 # AMP-CSS
 
 [![Build Status](https://travis-ci.com/saitho/amp-css.svg?branch=master)](https://travis-ci.com/saitho/amp-css)
-
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amp-css&metric=alert_status)](https://sonarcloud.io/dashboard?id=amp-css)
+[![npm version](https://img.shields.io/npm/v/amp-css.svg)](https://www.npmjs.com/package/amp-css)
+[![npm license](https://img.shields.io/npm/l/amp-css.svg)](https://www.npmjs.com/package/amp-css)
+[![Known Vulnerabilities](https://snyk.io/test/github/saitho/namp-css/badge.svg?targetFile=package.json)](https://snyk.io/test/github/saitho/amp-css?targetFile=package.json)
+[![Dependency Status](https://david-dm.org/saitho/amp-css/status.svg)](https://david-dm.org/saitho/amp-css)
 
 AMP (Accelerated Mobile Pages) is a project by Google and the Digital News Initiative
 aiming to improve the speed of websites by utilizing a special JavaScript framework.
