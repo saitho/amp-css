@@ -9,7 +9,7 @@ before_script:
   - npm build
 
 script:
-  - npm test
+  - npm --harmony test
 
 after_success:
   - npm run-script typedoc
