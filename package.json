@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
-    "test": "jest --forceExit --coverage --verbose"
+    "test": "jest --detectOpenHandles --coverage --verbose"
   },
   "dependencies": {
     "amphtml-validator": "^1.0.29",
