@@ -5,8 +5,9 @@ addons:
     organization: saitho
 
 script:
-  - yarn test
   - yarn build
+  - yarn test
+  - sonar-scanner
 
 after_success:
   - yarn typedoc

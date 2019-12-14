@@ -1,5 +1,8 @@
 # AMP-CSS
 
+[![Build Status](https://travis-ci.com/saitho/amp-css.svg?branch=master)](https://travis-ci.com/saitho/amp-css)
+
+
 AMP (Accelerated Mobile Pages) is a project by Google and the Digital News Initiative
 aiming to improve the speed of websites by utilizing a special JavaScript framework.
 
