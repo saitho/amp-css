@@ -17,7 +17,7 @@ module.exports = {
     ],
     testEnvironment: 'node',
     collectCoverageFrom: [
-        'src/**/*.ts',
+        'src/{!(bin/amp-css),**/}.ts',
     ],
     preset: 'ts-jest',
 };
