@@ -1,14 +1,18 @@
 language: nodejs
 
+addons:
+  sonarcloud:
+    organization: saitho
+
 before_script:
-  - yarn install
-  - yarn build
+  - npm install
+  - npm build
 
 script:
-  - yarn test
+  - npm test
 
 after_success:
-  - yarn typedoc
+  - npm run-script typedoc
   - yarn pack
 
 deploy:
