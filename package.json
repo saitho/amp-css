@@ -13,6 +13,14 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "css",
+    "scss",
+    "amp-custom",
+    "AMP",
+    "AMP HTML",
+    "Accelerated Mobile Pages"
+  ],
   "scripts": {
     "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
@@ -20,7 +28,7 @@
   },
   "dependencies": {
     "amphtml-validator": "^1.0.29",
-    "meow": "^5.0.0",
+    "meow": "^6.0.0",
     "node-sass": "^4.13.0",
     "node-sass-tilde-importer": "git+https://github.com/saitho/node-sass-tilde-importer.git"
   },
