@@ -4,15 +4,12 @@ addons:
   sonarcloud:
     organization: saitho
 
-before_script:
-  - npm install
-  - npm build
-
 script:
-  - npm --harmony test
+  - yarn test
+  - yarn build
 
 after_success:
-  - npm run-script typedoc
+  - yarn typedoc
   - yarn pack
 
 deploy:
