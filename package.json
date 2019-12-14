@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
+    "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
+    "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
     "test": "jest --forceExit --coverage --verbose"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
     "@types/node-sass": "^4.11.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
+    "typedoc": "^0.15.4",
     "typescript": "^3.7.3"
   }
 }

@@ -6,3 +6,5 @@ dist
 !jest.config.js
 bin/amp-css
 coverage
+docs
+amp-css-*.tgz

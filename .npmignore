@@ -5,3 +5,4 @@ tsconfig.json
 *.iml
 .idea
 jest.config.js
+.travis.yml
