@@ -13,6 +13,14 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "css",
+    "scss",
+    "amp-custom",
+    "AMP",
+    "AMP HTML",
+    "Accelerated Mobile Pages"
+  ],
   "scripts": {
     "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
