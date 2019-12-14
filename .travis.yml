@@ -1,4 +1,5 @@
-language: nodejs
+language: node_js
+os: linux
 
 addons:
   sonarcloud:
@@ -15,20 +16,17 @@ after_success:
 
 deploy:
   - provider: pages
-    skip_cleanup: true
     local_dir: docs/
-    github_token: $GITHUB_TOKEN
+    token: $GITHUB_TOKEN
     on:
       tags: true
   - provider: releases
-    api_key: $GITHUB_TOKEN
+    token: $GITHUB_TOKEN
     file_glob: true
     file: "amp-css-*.tgz"
-    skip_cleanup: true
     on:
       tags: true
   - provider: npm
-    skip_cleanup: true
     email: $NPM_MAIL
     api_key: $NPM_TOKEN
     on:
