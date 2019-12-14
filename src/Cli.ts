@@ -80,10 +80,6 @@ export class Cli implements CliInterface {
     }
 
     public initEmitter(emitter: EventEmitter) {
-        emitter.on('error', (err: any) => {
-            console.error(err);
-            process.exit(1);
-        });
         emitter.on('warn', (data: any) => {
             if (!this.getOptions().quiet) {
                 console.warn(data);
@@ -98,6 +94,7 @@ export class Cli implements CliInterface {
             }
         });
         emitter.on('log', process.stdout.write.bind(process.stdout));
+        emitter.on('error', process.stderr.write.bind(process.stderr));
     }
 
     protected assignCommandOptions() {
