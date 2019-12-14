@@ -18,8 +18,6 @@ deploy:
   - provider: pages
     local_dir: docs/
     token: $GITHUB_TOKEN
-    on:
-      tags: true
   - provider: releases
     token: $GITHUB_TOKEN
     file_glob: true
