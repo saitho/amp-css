@@ -9,7 +9,7 @@ import * as path from "path";
 export class ProcessCommand extends AbstractCommand implements CommandInterface {
     public run(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const commandOptions = this.caller.getCommandOptions();
+            const commandOptions = this.caller.getOptions();
             if (commandOptions.quiet) {
                 this.enableQuietMode();
             }

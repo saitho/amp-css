@@ -1,7 +1,5 @@
 import * as assert from "assert";
 import DoneCallback = jest.DoneCallback;
-import {CompileCssWorker} from "../../src/Worker/CompileCssWorker";
-import * as path from "path";
 import {AssignCssWorker} from "../../src/Worker/AssignCssWorker";
 
 describe("AssignCssWorker", () => {

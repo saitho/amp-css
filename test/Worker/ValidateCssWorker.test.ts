@@ -1,5 +1,3 @@
-import {SanitizeCssWorker} from "../../src/Worker/SanitizeCssWorker";
-import * as assert from "assert";
 import DoneCallback = jest.DoneCallback;
 import {ValidateCssWorker} from "../../src/Worker/ValidateCssWorker";
 
