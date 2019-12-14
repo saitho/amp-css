@@ -8,3 +8,4 @@ bin/amp-css
 coverage
 docs
 amp-css-*.tgz
+.scannerwork/
