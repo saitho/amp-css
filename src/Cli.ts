@@ -80,8 +80,12 @@ export class Cli implements CliInterface {
     }
 
     public initEmitter(emitter: EventEmitter) {
-        emitter.on('log', process.stdout.write.bind(process.stdout));
-        emitter.on('error', process.stderr.write.bind(process.stderr));
+        emitter.on('log', (args: string) => {
+            return process.stdout.write.bind(process.stdout)(args + "\n");
+        });
+        emitter.on('error', (args: string) => {
+            return process.stderr.write.bind(process.stderr)(args + "\n");
+        });
         emitter.on('help', (data: any) => emitter.emit('log', data));
     }
 
@@ -121,6 +125,6 @@ export class Cli implements CliInterface {
             return;
         }
         commands[requestedCommand].run()
-            .catch((error) => this.emitter.emit('error', error.toString() + "\n"));
+            .catch((error) => this.emitter.emit('error', error.toString()));
     }
 }
