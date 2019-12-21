@@ -64,7 +64,7 @@ export class ProcessCommand extends AbstractCommand implements CommandInterface 
         const compileWorker = new CompileCssWorker();
         compileWorker.setFile(commandOptions.src);
         compileWorker.setMinify(commandOptions.minify);
-        compileWorker.setIncludePaths(commandOptions.includePath);
+        compileWorker.setIncludePaths([commandOptions.includePath]);
         return compileWorker.work()
     }
 

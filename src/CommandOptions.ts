@@ -6,5 +6,5 @@ export type CommandOptions = {
     quiet?: boolean;             // do not output validation report
     sanitize?: boolean;          // sanitize css
     minify?: boolean;            // minify css
-    includePath?: string[];      // include paths for SCSS compiler
+    includePath?: string;        // include paths for SCSS compiler
 }
