@@ -33,7 +33,7 @@ describe("ProcessCommand", () => {
         when(cliSpy.getOptions()).thenReturn({
             src: 'scss/some-file.scss',
             dest: 'css/some-file.css',
-            includePath: ['path1', 'path2']
+            includePath: 'path1'
         });
 
         when(commandSpy.doCompileWork(anything())).thenResolve('compiled-css');
@@ -41,7 +41,7 @@ describe("ProcessCommand", () => {
 
         command.run()
             .then(() => {
-                verify(commandSpy.doCompileWork(objectContaining({ includePath: ['path1', 'path2'] }))).once();
+                verify(commandSpy.doCompileWork(objectContaining({ includePath: 'path1' }))).once();
                 verify(commandSpy.doValidateWork('compiled-css')).once();
                 assert.equal(fs.readFileSync('css/some-file.css'), 'compiled-css');
                 done();
