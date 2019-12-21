@@ -121,6 +121,6 @@ export class Cli implements CliInterface {
             return;
         }
         commands[requestedCommand].run()
-            .catch((error) => this.emitter.emit('error', error));
+            .catch((error) => this.emitter.emit('error', error.toString() + "\n"));
     }
 }
