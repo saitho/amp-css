@@ -1,6 +1,6 @@
 {
   "name": "amp-css",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Provides a binary to compile SCSS files and validate them for AMP.",
   "bin": {
     "amp-css": "dist/bin/amp-css"

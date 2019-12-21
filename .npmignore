@@ -6,3 +6,5 @@ tsconfig.json
 .idea
 jest.config.js
 .travis.yml
+coverage
+sonar-project.properties
