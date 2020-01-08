@@ -6,6 +6,12 @@ import * as mockfs from "mock-fs";
 import {Cli} from "../../src/Cli";
 import * as assert from "assert";
 
+function setProperty(object, property, value) {
+    const originalProperty = Object.getOwnPropertyDescriptor(object, property);
+    Object.defineProperty(object, property, { value });
+    return originalProperty
+}
+
 describe("ProcessCommand", () => {
     let cli: Cli = null;
     let cliSpy: Cli = null;
@@ -72,12 +78,22 @@ describe("ProcessCommand", () => {
     });
 
     it("missing option src should fail", (done: DoneCallback) => {
+        const exitMock = jest.fn();
+        const originalProperty = setProperty(process, 'exit', exitMock);
+
         when(cliSpy.getOptions()).thenReturn({
             dest: 'scss/some-file.css',
         });
         command.run()
-            .then(() => done('Expected to fail.'))
-            .catch(() => done());
+            .then(() => {
+                setProperty(process, 'exit', originalProperty);
+                done('Expected to fail.');
+            })
+            .catch(() => {
+                expect(exitMock).toHaveBeenCalledWith(1);
+                setProperty(process, 'exit', originalProperty);
+                done();
+            });
     });
 
     it("missing option dest should succeed", (done: DoneCallback) => {
