@@ -84,7 +84,8 @@ export class Cli implements CliInterface {
             return process.stdout.write.bind(process.stdout)(args + "\n");
         });
         emitter.on('error', (args: string) => {
-            return process.stderr.write.bind(process.stderr)(args + "\n");
+            process.stderr.write(args + "\n");
+            process.exit(1);
         });
         emitter.on('help', (data: any) => emitter.emit('log', data));
     }
