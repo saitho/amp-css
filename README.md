@@ -16,11 +16,19 @@ Also it provides a way to insert CSS into a (static) HTML page.
 
 ## Installing
 
+### NPM
+
 ```shell script
 npm install --save-dev amp-css
 ```
 
-or if you're using Yarn:
+### PNPM
+
+```shell script
+pnpm install --save-dev amp-css
+```
+
+### Yarn
 
 ```shell script
 yarn add --dev amp-css
