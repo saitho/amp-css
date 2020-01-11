@@ -23,33 +23,10 @@ jobs:
         - pnpm test
         - sonar-scanner
     - stage: release
-      if: tag IS present
-      script:
-        - pnpm run build # workspaces were not working... so rebuild package
-        - pnpm pack
+      if: branch = master
+      node_js: lts/*
       deploy:
-        - provider: npm
-          email: $NPM_MAIL
-          api_token: $NPM_TOKEN
-          edge: true
-          on:
-            tags: true
-        - provider: releases
-          api_key: $GITHUB_TOKEN
-          skip_cleanup: true
-          file_glob: true
-          file: amp-css-*.tgz
-          on:
-            tags: true
-    - stage: GitHub Pages
-      if: tag IS present
-      script:
-            - pnpm run typedoc
-      deploy:
-        provider: pages
+        provider: script
         skip_cleanup: true
-        github_token: $GITHUB_TOKEN
-        local_dir: docs
-        verbose: true
-        on:
-          tags: true
+        script:
+          - pnpx semantic-release

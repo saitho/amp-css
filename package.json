@@ -24,7 +24,9 @@
   "scripts": {
     "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
     "typedoc": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
-    "test": "jest --detectOpenHandles --coverage --verbose"
+    "test": "jest --detectOpenHandles --coverage --verbose",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz"
   },
   "dependencies": {
     "amphtml-validator": "^1.0.29",
@@ -33,16 +35,60 @@
     "node-sass-tilde-importer": "git+https://github.com/saitho/node-sass-tilde-importer.git"
   },
   "devDependencies": {
+    "@saithodev/semantic-release-sharedconf-npm": "^2.0.1",
+    "@semantic-release/git": "^8.0.0",
     "@types/amphtml-validator": "^1.0.1",
     "@types/jest": "^24.0.23",
     "@types/meow": "^5.0.0",
     "@types/mock-fs": "^4.10.0",
     "@types/node-sass": "^4.11.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
     "jest": "^24.9.0",
     "mock-fs": "^4.10.4",
+    "semantic-release": "^16.0.1",
     "ts-jest": "^24.3.0",
     "ts-mockito": "^2.5.0",
     "typedoc": "^0.15.4",
     "typescript": "^3.7.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "tarballDir": "release"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json"
+          ]
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "release/*.tgz",
+              "label": "Compiled source code"
+            }
+          ]
+        }
+      ]
+    ],
+    "branches": [
+      "master"
+    ]
   }
 }
