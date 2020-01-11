@@ -1,36 +1,54 @@
 language: node_js
 os: linux
+dist: trusty
 
-addons:
-  sonarcloud:
-    organization: saitho
+cache:
+  directories:
+  - node_modules
 
-script:
-  - yarn build
-  - yarn test
-  - sonar-scanner
+install:
+  - npm i pnpm -g
+  - pnpm install
 
-after_success:
-  - yarn typedoc
-  - yarn pack
-
-deploy:
-  - provider: pages
-    skip_cleanup: true
-    local_dir: docs/
-    github_token: $GITHUB_TOKEN
-    on:
-      tags: true
-  - provider: releases
-    token: $GITHUB_TOKEN
-    file_glob: true
-    file: "amp-css-*.tgz"
-    skip_cleanup: true
-    on:
-      tags: true
-  - provider: npm
-    skip_cleanup: true
-    email: $NPM_MAIL
-    api_key: $NPM_TOKEN
-    on:
-      tags: true
+jobs:
+  include:
+    - stage: build
+      script:
+        - pnpm run build
+    - stage: test code
+      addons:
+        sonarcloud:
+          organization: saitho
+      script:
+        - pnpm test
+        - sonar-scanner
+    - stage: release
+      if: tag IS present
+      script:
+        - pnpm run build # workspaces were not working... so rebuild package
+        - pnpm pack
+      deploy:
+        - provider: npm
+          email: $NPM_MAIL
+          api_key: $NPM_TOKEN
+          on:
+            tags: true
+        - provider: releases
+          api_key: $GITHUB_TOKEN
+          skip_cleanup: true
+          file_glob: true
+          file: amp-css-*.tgz
+          on:
+            tags: true
+    - stage: GitHub Pages
+      if: tag IS present
+      script:
+            - pnpm run typedoc
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        local_dir: docs
+        verbose: true
+        on:
+          tags: true
