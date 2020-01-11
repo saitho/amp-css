@@ -30,7 +30,8 @@ jobs:
       deploy:
         - provider: npm
           email: $NPM_MAIL
-          api_key: $NPM_TOKEN
+          api_token: $NPM_TOKEN
+          edge: true
           on:
             tags: true
         - provider: releases
