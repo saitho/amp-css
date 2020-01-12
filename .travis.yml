@@ -23,7 +23,7 @@ jobs:
         - pnpm test
         - sonar-scanner
       after_success:
-        - "[[ $TRAVIS_PULL_REQUEST != 'false' ]] && npx semantic-release-github-pr || exit 0"
+        - "[[ $TRAVIS_PULL_REQUEST != 'false' ]] && pnpx semantic-release-github-pr || exit 0"
     - stage: release
       if: branch = master
       node_js: lts/*
