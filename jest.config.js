@@ -16,6 +16,7 @@ module.exports = {
         '**/test/**/*.test.ts',
     ],
     testEnvironment: 'node',
+    coverageReporters: ['lcovonly', 'text'],
     collectCoverageFrom: [
         'src/{!(bin/amp-css),**/}.ts',
     ],

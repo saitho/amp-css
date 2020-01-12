@@ -1,11 +1,13 @@
 # AMP-CSS
 
+[![Dependency Status](https://david-dm.org/saitho/amp-css/status.svg)](https://david-dm.org/saitho/amp-css)
 [![Build Status](https://travis-ci.com/saitho/amp-css.svg?branch=master)](https://travis-ci.com/saitho/amp-css)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amp-css&metric=alert_status)](https://sonarcloud.io/dashboard?id=amp-css)
 [![npm version](https://img.shields.io/npm/v/amp-css.svg)](https://www.npmjs.com/package/amp-css)
 [![npm license](https://img.shields.io/npm/l/amp-css.svg)](https://www.npmjs.com/package/amp-css)
 [![Known Vulnerabilities](https://snyk.io/test/github/saitho/amp-css/badge.svg)](https://snyk.io/test/github/saitho/amp-css)
-[![Dependency Status](https://david-dm.org/saitho/amp-css/status.svg)](https://david-dm.org/saitho/amp-css)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amp-css&metric=alert_status)](https://sonarcloud.io/dashboard?id=amp-css)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 AMP (Accelerated Mobile Pages) is a project by Google and the Digital News Initiative
 aiming to improve the speed of websites by utilizing a special JavaScript framework.
@@ -16,11 +18,19 @@ Also it provides a way to insert CSS into a (static) HTML page.
 
 ## Installing
 
+### NPM
+
 ```shell script
 npm install --save-dev amp-css
 ```
 
-or if you're using Yarn:
+### PNPM
+
+```shell script
+pnpm install --save-dev amp-css
+```
+
+### Yarn
 
 ```shell script
 yarn add --dev amp-css
