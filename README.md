@@ -2,8 +2,8 @@
 
 [![Dependency Status](https://david-dm.org/saitho/amp-css/status.svg)](https://david-dm.org/saitho/amp-css)
 [![Build Status](https://travis-ci.com/saitho/amp-css.svg?branch=master)](https://travis-ci.com/saitho/amp-css)
-[![npm version](https://img.shields.io/npm/v/amp-css.svg)](https://www.npmjs.com/package/amp-css)
-[![npm license](https://img.shields.io/npm/l/amp-css.svg)](https://www.npmjs.com/package/amp-css)
+[![npm version](https://img.shields.io/npm/v/@saithodev/amp-css.svg)](https://www.npmjs.com/package/@saithodev/amp-css)
+[![npm license](https://img.shields.io/npm/l/@saithodev/amp-css.svg)](https://www.npmjs.com/package/@saithodev/amp-css)
 [![Known Vulnerabilities](https://snyk.io/test/github/saitho/amp-css/badge.svg)](https://snyk.io/test/github/saitho/amp-css)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amp-css&metric=alert_status)](https://sonarcloud.io/dashboard?id=amp-css)
@@ -21,19 +21,19 @@ Also it provides a way to insert CSS into a (static) HTML page.
 ### NPM
 
 ```shell script
-npm install --save-dev amp-css
+npm install --save-dev @saithodev/amp-css
 ```
 
 ### PNPM
 
 ```shell script
-pnpm install --save-dev amp-css
+pnpm install --save-dev @saithodev/amp-css
 ```
 
 ### Yarn
 
 ```shell script
-yarn add --dev amp-css
+yarn add --dev @saithodev/amp-css
 ```
 
 ## Command overview
