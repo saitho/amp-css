@@ -27,6 +27,8 @@ jobs:
     - stage: release
       if: branch = master
       node_js: lts/*
+      script:
+        - mkdir -p docs
       deploy:
         provider: script
         skip_cleanup: true
