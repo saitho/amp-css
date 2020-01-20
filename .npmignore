@@ -8,3 +8,4 @@ jest.config.js
 .travis.yml
 coverage
 sonar-project.properties
+release
