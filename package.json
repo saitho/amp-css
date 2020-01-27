@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "build": "tsc && mv ./dist/bin/amp-css.js ./dist/bin/amp-css",
-    "docs:build": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/",
+    "docs:build": "typedoc --out ./docs --mode modules --tsconfig ./tsconfig.json ./src/ && touch ./docs/.nojekyll",
     "test": "jest --detectOpenHandles --coverage --verbose",
     "semantic-release": "semantic-release",
     "commit": "git-cz"
