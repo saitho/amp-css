@@ -8,6 +8,7 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=amp-css&metric=alert_status)](https://sonarcloud.io/dashboard?id=amp-css)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsaitho%2Famp-css.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsaitho%2Famp-css?ref=badge_shield)
 
 AMP (Accelerated Mobile Pages) is a project by Google and the Digital News Initiative
 aiming to improve the speed of websites by utilizing a special JavaScript framework.
@@ -83,3 +84,6 @@ There currently is no support for compiling multiple SCSS files or inserting mul
 I currently don't see a use case for that.
 
 If your stylings consists of multiple stylings, `@import` them all in one SCSS file which you then compile.
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsaitho%2Famp-css.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsaitho%2Famp-css?ref=badge_large)
