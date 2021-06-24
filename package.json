@@ -32,7 +32,7 @@
   "dependencies": {
     "amphtml-validator": "^1.0.33",
     "meow": "^8.0.0",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "node-sass-tilde-importer": "git+https://github.com/saitho/node-sass-tilde-importer.git"
   },
   "devDependencies": {
