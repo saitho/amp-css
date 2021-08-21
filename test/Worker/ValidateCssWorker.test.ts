@@ -17,27 +17,27 @@ describe("ValidateCssWorker", () => {
             .catch(() => done());
     });
     it("should fail on too large CSS", (done: DoneCallback) => {
-        const fiftyByteCss = `body { font-size: 15px; border: 1px solid black; }`; // this CSS is 50 byte
-        let overFiftykBytesCss = '';
+        const byteCss = `body {font-family: Arial, sans-serif; color: red, border: 1px solid black;}`; // this CSS is 75 byte
+        let overMaxBytesCss = '';
         for (let i = 0; i < 1001; i++) {
-            overFiftykBytesCss = overFiftykBytesCss.concat(fiftyByteCss);
+            overMaxBytesCss = overMaxBytesCss.concat(byteCss);
         }
 
         const worker = new ValidateCssWorker();
-        worker.setCss(overFiftykBytesCss);
+        worker.setCss(overMaxBytesCss);
         worker.work()
             .then(() => done.fail('Validation succeeded even though it should not!'))
             .catch(() => done());
     });
-    it("should succeed on CSS being exactly 50kb", (done: DoneCallback) => {
-        const fiftyByteCss = `body { font-size: 15px; border: 1px solid black; }`; // this CSS is 50 byte
-        let exactlyFiftykBytesCss = '';
+    it("should succeed on CSS being exactly 75kb", (done: DoneCallback) => {
+        const byteCss = `body {font-family: Arial, sans-serif; color: red, border: 1px solid black;}`; // this CSS is 75 byte
+        let exactlyMaxBytesCss = '';
         for (let i = 0; i < 1000; i++) {
-            exactlyFiftykBytesCss = exactlyFiftykBytesCss.concat(fiftyByteCss);
+            exactlyMaxBytesCss = exactlyMaxBytesCss.concat(byteCss);
         }
 
         const worker = new ValidateCssWorker();
-        worker.setCss(exactlyFiftykBytesCss);
+        worker.setCss(exactlyMaxBytesCss);
         worker.work()
             .then(() => done())
             .catch(() => done.fail("Validation failed."));

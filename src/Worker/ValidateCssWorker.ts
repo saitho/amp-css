@@ -20,7 +20,7 @@ export class ValidateCssWorker extends AbstractCssWorker implements WorkerInterf
     public async work() {
         return new Promise<void>(async (resolve, reject) => {
             if (!this.checkFileSize()) {
-                reject('[AMP] CSS file size extends 50kb!');
+                reject('[AMP] CSS file size extends 75kb!');
                 return;
             }
 
@@ -65,6 +65,6 @@ export class ValidateCssWorker extends AbstractCssWorker implements WorkerInterf
     protected checkFileSize(): boolean {
         const byteSize = Buffer.from(this.css).byteLength;
         console.debug('CSS byte size is: ' + byteSize);
-        return byteSize <= 50000;
+        return byteSize <= 75000;
     }
 }
