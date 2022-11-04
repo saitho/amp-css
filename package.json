@@ -30,10 +30,9 @@
     "commit": "git-cz"
   },
   "dependencies": {
-    "amphtml-validator": "^1.0.33",
+    "amphtml-validator": "^1.0.35",
     "meow": "^8.0.0",
-    "node-sass": "^7.0.1",
-    "node-sass-tilde-importer": "git+https://github.com/saitho/node-sass-tilde-importer.git"
+    "node-sass": "^7.0.1"
   },
   "devDependencies": {
     "@saithodev/semantic-release-sharedconf-npm": "^2.1.0",

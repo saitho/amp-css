@@ -7,7 +7,7 @@ describe("ValidateCssWorker", () => {
         worker.setCss(`body{color:red;}`);
         worker.work()
             .then(() => done())
-            .catch(() => done.fail("Validation failed."));
+            .catch((e) => done.fail("Validation failed: " + e));
     });
     it("should fail on invalid CSS", (done: DoneCallback) => {
         const worker = new ValidateCssWorker();

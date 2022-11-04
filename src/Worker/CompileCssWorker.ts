@@ -51,7 +51,6 @@ export class CompileCssWorker extends AbstractFileWorker implements WorkerInterf
         return new Promise<string>(function(resolve, reject) {
             const sassOptions: nodeSass.Options = {
                 includePaths: that.getScssIncludePaths(),
-                importer: require('node-sass-tilde-importer'),
                 outputStyle: that.minify ? 'compressed' : 'nested',
                 file: that.file,
             };
