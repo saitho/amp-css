@@ -1,3 +1,10 @@
+## [1.1.10](https://github.com/saitho/amp-css/compare/v1.1.9...v1.1.10) (2022-11-04)
+
+
+### Bug Fixes
+
+* add missing build ([6df3364](https://github.com/saitho/amp-css/commit/6df33643a97460590a783c7f60a14601c21d44be))
+
 ## [1.1.9](https://github.com/saitho/amp-css/compare/v1.1.8...v1.1.9) (2022-11-04)
 
 
