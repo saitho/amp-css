@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm i -g pnpm && pnpm i
+      - run: pnpm build
       - run: mkdir -p docs
       - name: Semantic Release
         id: semrel
