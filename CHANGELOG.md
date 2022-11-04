@@ -1,3 +1,13 @@
+## [1.1.9](https://github.com/saitho/amp-css/compare/v1.1.8...v1.1.9) (2022-11-04)
+
+
+### Bug Fixes
+
+* package.json to reduce vulnerabilities ([88aa7e1](https://github.com/saitho/amp-css/commit/88aa7e1532c865d0d911e5c40fd13fb76d7b33d4))
+* package.json to reduce vulnerabilities ([eea00c8](https://github.com/saitho/amp-css/commit/eea00c821e3a89517dc2ed82529108dad2bcd015))
+* raise max css size to 75kb ([59b81f2](https://github.com/saitho/amp-css/commit/59b81f285b1131a1e84648d0ab06a23bc4b83611))
+* update amphtml-validator version to fix validation and remove unavailable packages ([96bdc8e](https://github.com/saitho/amp-css/commit/96bdc8e130f6258aa4c014fc87675931885c7575))
+
 ## [1.1.8](https://github.com/saitho/amp-css/compare/v1.1.7...v1.1.8) (2020-11-29)
 
 

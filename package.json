@@ -1,6 +1,6 @@
 {
   "name": "@saithodev/amp-css",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Provides a binary to compile SCSS files and validate them for AMP.",
   "bin": {
     "amp-css": "dist/bin/amp-css"
