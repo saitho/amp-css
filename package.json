@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "amphtml-validator": "^1.0.35",
-    "meow": "^8.0.0",
+    "meow": "^10.0.0",
     "node-sass": "^7.0.3"
   },
   "devDependencies": {
